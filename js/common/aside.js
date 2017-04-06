@@ -11,7 +11,16 @@ define(['jquery', 'jqueryCookie', 'template'], function ($, undefiend, template)
     // 1.获取本地储存的的用户信息
     var userInfoStr = $.cookie('userInfo');
     // 2.把用户信息解析为js对象方便使用
-    var userInfoObj = JSON.parse(userInfoStr);
+    var userInfoObj;
+    // var userInfoObj = JSON.parse(userInfoStr);
+
+    //进行错误检出，如果有错误不至于无法执行后面的代码
+    try {
+        userInfoObj = JSON.parse(userInfoStr);
+    }catch(e){
+        userInfoObj = {};
+    }
+
     //  3.拼接用户信息模板字符串
     var prifileTpl =
         '<div class="profile">' +
