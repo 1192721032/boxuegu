@@ -1,8 +1,4 @@
-define(['jquery'], function ($) {
-  $.post('v6/login', {
-    tc_name: '前端学院',
-    tc_pass: '123456'
-  }, function (data) {
-    console.log(data);
-  })
+define(['jquery','common','header','nprogress'], function ($,undefined,undefined,nprogress) {
+  // 页面所有代码执行完毕，进度条结束
+  nprogress.done();
 });
