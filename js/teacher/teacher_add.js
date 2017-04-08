@@ -1,5 +1,5 @@
-define(['aside', 'header', 'loading', 'nprogress', 'jquery', 'template', 'jqueryForm'], 
-	function(undefined, undefined, undefined, nprogress, $, template, undefined) {
+define(['aside', 'header', 'loading', 'nprogress', 'jquery', 'template', 'jqueryForm', 'datepicker', 'datepickerCN'], 
+	function(undefined, undefined, undefined, nprogress, $, template, undefined, undefined, undefined) {
 	
 	/**
 	 * 我们这里的js，作用与两个页面，一个是讲师添加，一个是讲师编辑。
@@ -31,11 +31,14 @@ define(['aside', 'header', 'loading', 'nprogress', 'jquery', 'template', 'jquery
 		teacherAdd();
 	}
 	
-	// 添加讲师，成功后跳转到讲师列表页
+	// 添加讲师功能，成功后跳转到讲师列表页
 	function teacherAdd() {
 		
 		// 把模版渲染到页面中，因为是添加，所以不需要回显数据，那么传递一个空对象即可
 		$('.teacher').html(template('teacher-add-edit-tpl', {}));
+
+		// 页面渲染完毕，初始化日期插件
+			initDatepicker();
 		
 		// 提交，因为表单是动态生成的，所以使用委托的方式监听事件
 //		$(document).on('submit', '#teacher-add-edit-form', function() {
@@ -51,12 +54,15 @@ define(['aside', 'header', 'loading', 'nprogress', 'jquery', 'template', 'jquery
 		});
 	};
 	
-	// 回显讲师数据，修改讲师数据
+	//编辑功能   回显讲师数据，修改讲师数据
 	function teacherEdit() {
 		
 		// 回显，根据url传入的tc_id属性获取对应讲师的详细信息，然后回显数据
 		$.get('/v6/teacher/edit', { tc_id: urlSeachObj.tc_id }, function(data) {
 			$('.teacher').html(template('teacher-add-edit-tpl', data.result));
+
+			// 页面渲染完毕，初始化日期插件
+			initDatepicker();
 		});
 		
 		// 提交，因为表单是动态生成的，所以使用委托的方式监听事件
@@ -67,6 +73,14 @@ define(['aside', 'header', 'loading', 'nprogress', 'jquery', 'template', 'jquery
 			return false;
 		});
 	};
-	
+
+	// 初始化日期插件
+	function initDatepicker() {
+		$('#datepicker-join').datepicker({
+			language: 'zh-CN',
+			endDate: new Date(),
+			format: 'yyyy-mm-dd'
+		});
+	}
 	nprogress.done();
 });
