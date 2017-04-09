@@ -1,10 +1,10 @@
 // jqueryCookie是define定义的模块，但是像这种jquery插件，
 // 他们提供给的功能都放置到了jquery原型或者自己身上，并没有返回东西，所有引入他们得到的返回值是undefine，
 // 要使用他们提供的功能，必须要借助与jquery。
-define(['jquery', 'jqueryCookie'], function($, undefined) {
-	
+define(['jquery', 'jqueryCookie'], function ($, undefined) {
+
 	// 登陆校验
-	(function() {
+	(function () {
 		/**
 		 * 判断用户有没有登陆过，
 		 * 没有的话跳转到登陆页。
@@ -24,21 +24,40 @@ define(['jquery', 'jqueryCookie'], function($, undefined) {
 		
 		// 如果没有登陆过，打到登陆页面
 		!isLogin && (location.href = '/html/home/login.html');*/
-		
+
 		// 如果没有PHPSESSID这个cookie，证明没有登陆过，跳转到登陆页面
-		if(!$.cookie('PHPSESSID')) {
+		if (!$.cookie('PHPSESSID')) {
 			location.href = '/html/home/login.html';
 		}
 	})();
 
+
 	// ajax-loading
-	(function() {
-		
-		$(document).on('ajaxStart', function() {
+	(function () {
+
+		$(document).on('ajaxStart', function () {
 			$('.overlay').show();
-		}).on('ajaxStop', function() {
+		}).on('ajaxStop', function () {
 			$('.overlay').hide();
 		});
-		
+
 	})();
+
+	// 对外暴露一个对象
+	return {
+
+		// 把页面中的查询字符串转换为对象的形式
+		parseSearch: function (searchName) {
+			var searchArr = location.search.slice(1).split('&');
+			var searchObj = {}, tempArr;
+
+			for (var i = 0, len = searchArr.length; i < len; i++) {
+				tempArr = searchArr[i].split('=');
+				searchObj[tempArr[0]] = tempArr[1];
+			}
+
+			// 如果没有传参，那么返回对象，传了，返回指定的参数值
+			return (searchName == null) ? searchObj : searchObj[searchName];
+		}
+	};
 });
